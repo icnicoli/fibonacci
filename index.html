@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px;
+            margin: 20x;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        #result-container {
+            margin-top: 20px;
+        }
+
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            margin-bottom: 20px;
+        }
+
+        #buttons-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        #container.dark-mode {
+            background-color: #444;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        table.dark-mode, th.dark-mode, td.dark-mode {
+            border-color: #555;
+        }
+
+        button.dark-mode {
+            background-color: #555;
+            color: #fff;
+        }
+
+        #result.dark-mode {
+            color: #fff;
+        }
+
+        /* Input styles */
+        td input {
+            width: 30px;
+            text-align: center;
+        }
+
+        /* Dark mode toggle styles */
+        .dark-mode-toggle {
+            position: absolute;
+            bottom: 10px;
+            right: 20px;
+            width: 40px;
+            height: 20px;
+            background-color: #fdd835; /* Yellow */
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .dark-mode-toggle::before {
+            content: '';
+            display: block;
+            width: 20px;
+            height: 20px;
+            background-color: #212121; /* Dark gray */
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .dark-mode-toggle::after {
+            content: '☀️'; /* Sun emoji */
+            display: block;
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .dark-mode-toggle.dark-mode::before {
+            transform: translateX(20px);
+        }
+
+        .dark-mode-toggle.dark-mode::after {
+            content: '🌜'; /* Moon emoji */
+            transform: translateX(20px);
+        }
+    </style>
+    <script>
+        function calculateFibonacci() {
+            const n = parseInt(document.getElementById('inputNumber').value);
+    
+            if (isNaN(n) || n < 0) {
+                alert('Please enter a nonnegative integer.');
+                return;
+            }
+    
+            const { result, solution } = fibonacci(n);
+            displayResult(result, solution);
+        }
+    
+        function fibonacci(n) {
+            let fib = [0, 1];
+            for (let i = 2; i <= n; i++) {
+                fib[i] = fib[i - 1] + fib[i - 2];
+            }
+    
+            const result = fib[n];
+            const solution = `F(${n}) = ${result}`;
+            return { result, solution };
+        }
+    
+        function displayResult(result, solution) {
+            const resultContainer = document.getElementById('result');
+            resultContainer.innerHTML = `<span>It's</span> ${result}<span>!</span>`;
+            resultContainer.style.opacity = '1';
+        }
+    
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('container').classList.toggle('dark-mode');
+            document.querySelectorAll('table, th, td').forEach(el => el.classList.toggle('dark-mode'));
+            document.getElementById('result-container').classList.toggle('dark-mode');
+            const toggleButton = document.querySelector('.dark-mode-toggle');
+            toggleButton.classList.toggle('dark-mode');
+            toggleButton.classList.toggle('light-mode');
+        }
+    
+        function restart() {
+            document.getElementById('result').style.opacity = '0';
+            document.getElementById('inputNumber').value = '';
+        }
+    </script>
+    
+</head>
+<body>
+
+<div id="container">
+    <h2>Fibonacci Calculator</h2>
+
+    <label for="inputNumber">Enter a Non-negative Integer (n):</label>
+    <input type="text" id="inputNumber">
+
+    <div id="result-container">
+        <div id="result"></div>
+    </div>
+
+    <div id="buttons-container">
+        <div id="darkModeToggleContainer" class="dark-mode-toggle" onclick="toggleDarkMode()"></div>
+        <button onclick="restart()">Restart</button>
+        <button onclick="calculateFibonacci()">Calculate Fibonacci</button>
+    </div>
+</div>
+
+</body>
+</html>
